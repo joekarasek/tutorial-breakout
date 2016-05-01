@@ -1,4 +1,4 @@
-$(document).ready(function() {
+document.addEventListener("DOMContentLoaded",function() {
   var canvas = document.getElementById("myCanvas");
   var ctx = canvas.getContext("2d");
   var x = canvas.width/2;
@@ -6,6 +6,12 @@ $(document).ready(function() {
   var dx = 2;
   var dy = -2;
   var ballRadius = 10;
+  var paddleHeight = 10;
+  var paddleWidth = 75;
+  var paddleX = (canvas.width-paddleWidth)/2;
+
+  var rightPressed = false;
+  var leftPressed = false;
 
 
   function drawBall() {
@@ -17,17 +23,25 @@ $(document).ready(function() {
     ctx.closePath();
   }
 
+  function drawPaddle() {
+    ctx.beginPath();
+    ctx.rect(paddleX, canvas.height-paddleHeight, paddleWidth, paddleHeight);
+    ctx.fillStyle = "#0095DD";
+    ctx.fill();
+    ctx.closePath();
+  }
+
   function draw() {
     // Clear the canvas
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     drawBall();
     // Detect Collisions
     // Bounce off the top and bottom
-    if(y + dy > canvas.height || y + dy < 0) {
+    if(y + dy > canvas.height-ballRadius || y + dy < ballRadius) {
       dy = -dy;
     }
     // Bounce off the left and righ walls
-    if(x + dx > canvas.width || x + dx < 0) {
+    if(x + dx > canvas.width-ballRadius || x + dx < ballRadius) {
       dx = -dx;
     }
     // Change the balls position

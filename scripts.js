@@ -12,7 +12,25 @@ document.addEventListener("DOMContentLoaded",function() {
 
   var rightPressed = false;
   var leftPressed = false;
+  document.addEventListener("keydown", keyDownHandler, false);
+  document.addEventListener("keyup", keyUpHandler, false)
 
+  function keyDownHandler(e) {
+    if(e.keyCode == 39) {
+        rightPressed = true;
+    }
+    else if(e.keyCode == 37) {
+        leftPressed = true;
+    }
+  }
+  function keyUpHandler(e) {
+      if(e.keyCode == 39) {
+          rightPressed = false;
+      }
+      else if(e.keyCode == 37) {
+          leftPressed = false;
+      }
+  }
 
   function drawBall() {
     // Draw the ball
@@ -25,7 +43,7 @@ document.addEventListener("DOMContentLoaded",function() {
 
   function drawPaddle() {
     ctx.beginPath();
-    ctx.rect(paddleX, canvas.height-paddleHeight, paddleWidth, paddleHeight);
+    ctx.rect(paddleX, canvas.height-paddleHeight-10, paddleWidth, paddleHeight);
     ctx.fillStyle = "#0095DD";
     ctx.fill();
     ctx.closePath();
@@ -34,7 +52,10 @@ document.addEventListener("DOMContentLoaded",function() {
   function draw() {
     // Clear the canvas
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+
     drawBall();
+    drawPaddle();
+
     // Detect Collisions
     // Bounce off the top and bottom
     if(y + dy > canvas.height-ballRadius || y + dy < ballRadius) {
@@ -44,10 +65,20 @@ document.addEventListener("DOMContentLoaded",function() {
     if(x + dx > canvas.width-ballRadius || x + dx < ballRadius) {
       dx = -dx;
     }
+
+    // Move the paddle
+    if(rightPressed && paddleX < canvas.width-paddleWidth) {
+        paddleX += 7;
+    }
+    else if(leftPressed && paddleX > 0) {
+        paddleX -= 7;
+    }
+
     // Change the balls position
     x += dx;
     y += dy;
   }
+
   setInterval(draw, 10);
 
 })

@@ -43,7 +43,7 @@ document.addEventListener("DOMContentLoaded",function() {
 
   function drawPaddle() {
     ctx.beginPath();
-    ctx.rect(paddleX, canvas.height-paddleHeight-10, paddleWidth, paddleHeight);
+    ctx.rect(paddleX, canvas.height-paddleHeight, paddleWidth, paddleHeight);
     ctx.fillStyle = "#0095DD";
     ctx.fill();
     ctx.closePath();
@@ -56,11 +56,20 @@ document.addEventListener("DOMContentLoaded",function() {
     drawBall();
     drawPaddle();
 
-    // Detect Collisions
-    // Bounce off the top and bottom
-    if(y + dy > canvas.height-ballRadius || y + dy < ballRadius) {
+// Detect Collisions
+    if (x > paddleX && x < paddleX + paddleWidth && y > canvas.height-ballRadius-paddleHeight) {
       dy = -dy;
+      debugger;
     }
+    if(y + dy < ballRadius) {
+      // Bounce off the top
+      dy = -dy;
+    } else if (y + dy > canvas.height-ballRadius) {
+      // Hit the bottom, game over
+      alert("Game Over");
+      document.location.reload();
+    }
+
     // Bounce off the left and righ walls
     if(x + dx > canvas.width-ballRadius || x + dx < ballRadius) {
       dx = -dx;
